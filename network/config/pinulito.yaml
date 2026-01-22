@@ -1,14 +1,14 @@
 region: "us-east-2"
 identifier: "alisa"
-profile: "alisa-network"
+profile: "pinulito-prod"
 
 vpc:
   create_vpc: true
-  cidr: "10.0.0.0/16"
+  cidr: "10.1.0.0/16"
   azs: ["us-east-2a", "us-east-2b", "us-east-2c"]
-  private_subnets: ["10.0.2.0/24", "10.0.3.0/24", "10.0.4.0/24"]
-  public_subnets: ["10.0.102.0/24", "10.0.103.0/24", "10.0.104.0/24"]
-  intra_subnets: ["10.0.52.0/24", "10.0.53.0/24", "10.0.54.0/24"]
+  private_subnets: ["10.1.2.0/24", "10.1.3.0/24", "10.1.4.0/24"]
+  public_subnets: ["10.1.102.0/24", "10.1.103.0/24", "10.1.104.0/24"]
+  intra_subnets: ["10.1.52.0/24", "10.1.53.0/24", "10.1.54.0/24"]
   enable_nat_gateway: true
   enable_vpn_gateway: false
   single_nat_gateway: true
@@ -20,20 +20,18 @@ vpc:
 
 transit:
   network:
-    create: true
+    create: false
     auto_accept_attachments: true
     share_tgw: true
     ram_external_principals: true
-    ram_principals:
-      - 985384755074
-    routes:
-      - "10.1.0.0/16"
-
-
+    ram_principals: []
+    routes: []
+  
   customer: 
-    create: false
-    owner: "823613469731"
-    route: "0.0.0.0/0"
+    create: true
+    owner: 823613469731
+    route: "10.0.0.0/16"
+  
 
 tags: 
   ManagedBy: "terraform"
