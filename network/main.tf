@@ -36,12 +36,15 @@ module "vpc" {
   flow_log_file_format = local.config.vpc.flow_log_file_format
 
   public_subnet_tags = {
-    "kubernetes.io/role/elb" = 1
+    "Tier" = "public"
   }
 
   private_subnet_tags = {
-    "kubernetes.io/role/internal-elb" = 1
-    "karpenter.sh/discovery"          = "${local.identifier}-eks"
+    "Tier" = "private"
+  }
+
+  intra_subnet_tags = {
+    "Tier" = "intra"
   }
 
   tags = local.tags
