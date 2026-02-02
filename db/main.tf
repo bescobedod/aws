@@ -29,6 +29,77 @@ resource "aws_kms_alias" "rds" {
 }
 
 ############################
+# IAM Role for S3 Backup/Restore
+############################
+resource "aws_iam_role" "rds_s3_backup_restore" {
+  name = "${local.identifier}-rds-s3-backup-restore-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "rds.amazonaws.com"
+        }
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+
+  tags = local.config.tags
+}
+
+resource "aws_iam_role_policy" "rds_s3_backup_restore" {
+  name = "${local.identifier}-rds-s3-backup-restore-policy"
+  role = aws_iam_role.rds_s3_backup_restore.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:ListBucket",
+          "s3:GetBucketLocation"
+        ]
+        Resource = "*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+############################
+# Option Group for SQLSERVER_BACKUP_RESTORE
+############################
+resource "aws_db_option_group" "sqlserver_backup_restore" {
+  name                     = "${local.identifier}-sqlserver-backup-restore"
+  option_group_description = "Option group for SQL Server native backup/restore"
+  engine_name              = "sqlserver-web"
+  major_engine_version     = "15.00"
+
+  option {
+    option_name = "SQLSERVER_BACKUP_RESTORE"
+
+    option_settings {
+      name  = "IAM_ROLE_ARN"
+      value = aws_iam_role.rds_s3_backup_restore.arn
+    }
+  }
+
+  tags = local.config.tags
+}
+
+############################
 # Security groups
 ############################
 resource "aws_security_group" "rds" {
@@ -108,6 +179,8 @@ module "rds_sql_server" {
   publicly_accessible = local.config.db_publicly_accessible
 
   vpc_security_group_ids = [aws_security_group.rds.id]
+
+  option_group_name = aws_db_option_group.sqlserver_backup_restore.name
 
   create_db_subnet_group = true
   subnet_ids             = local.network.output.vpc.intra_subnets 
