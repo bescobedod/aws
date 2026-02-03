@@ -26,6 +26,14 @@ resource "aws_iam_role_policy_attachment" "ec2_ssm_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
+# Adjuntar política de S3 Full Access al rol
+resource "aws_iam_role_policy_attachment" "ec2_s3_policy" {
+  for_each = local.config.ec2_instances
+  
+  role       = aws_iam_role.ec2_ssm_role[each.key].name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+}
+
 # Instance profile para asociar el rol a la instancia EC2
 resource "aws_iam_instance_profile" "ec2_profile" {
   for_each = local.config.ec2_instances
