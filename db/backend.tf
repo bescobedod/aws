@@ -1,11 +1,10 @@
 terraform {
-  required_version = "1.14.0"
+  required_version = "1.14.1"
   backend "s3" {
     bucket               = "pinulito-shared-terraform-state"
     region               = "us-east-2"
     key                  = "backend.tfstate"
     workspace_key_prefix = "pinulito-db"
     dynamodb_table       = "terraform-lock"
-    profile              = "alisa-shared"
   }
 }
