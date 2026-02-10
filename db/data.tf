@@ -4,6 +4,5 @@ data "terraform_remote_state" "network" {
     bucket  = "pinulito-shared-terraform-state"
     key     = "pinulito-network/${terraform.workspace}/backend.tfstate"
     region  = "us-east-2"
-    profile  = "alisa-shared"
   }
 }
