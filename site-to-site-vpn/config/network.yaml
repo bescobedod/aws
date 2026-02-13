@@ -1,0 +1,24 @@
+region: "us-east-2"
+assume_role_arn: "arn:aws:iam::823613469731:role/terraform"
+identifier: "alisa"
+
+# AWS Virtual Private Gateway configuration
+amazon_side_asn: 64512
+
+# Customer Gateway (FortiGate) configuration
+customer_gateway_ip: "191.98.193.250"
+customer_gateway_bgp_asn: 65000
+
+# On-premise network blocks
+on_premise_cidrs:
+  - "192.168.0.0/23"
+  #- "192.168.1.0/23"
+
+# Transit Gateway Integration
+# Adds routes in Transit Gateway so SAP VPC can reach on-premise networks
+enable_transit_gateway_integration: true
+
+tags:
+  Project: "Site-to-Site-VPN"
+  Environment: "Production"
+  ManagedBy: "terraform"
