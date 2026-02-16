@@ -18,6 +18,9 @@ on_premise_cidrs:
 # Adds routes in Transit Gateway so SAP VPC can reach on-premise networks
 enable_transit_gateway_integration: true
 
+# VPN Logging
+vpn_log_retention_days: 7  # CloudWatch Logs retention (days)
+
 tags:
   Project: "Site-to-Site-VPN"
   Environment: "Production"

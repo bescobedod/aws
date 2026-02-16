@@ -29,6 +29,16 @@ resource "aws_customer_gateway" "office" {
   }
 }
 
+# CloudWatch Log Group for VPN Connection Logs
+resource "aws_cloudwatch_log_group" "vpn_logs" {
+  name              = "/aws/vpn/${local.config.identifier}-${local.workspace_suffix}"
+  retention_in_days = local.config.vpn_log_retention_days
+
+  tags = {
+    Name = "${local.config.identifier}-vpn-logs-${local.workspace_suffix}"
+  }
+}
+
 # VPN Connection
 # Site-to-site VPN connection between AWS and office
 resource "aws_vpn_connection" "office" {
@@ -36,6 +46,22 @@ resource "aws_vpn_connection" "office" {
   customer_gateway_id = aws_customer_gateway.office.id
   type                = "ipsec.1"
   static_routes_only  = true
+
+  tunnel1_log_options {
+    cloudwatch_log_options {
+      log_enabled       = true
+      log_group_arn     = aws_cloudwatch_log_group.vpn_logs.arn
+      log_output_format = "json"
+    }
+  }
+
+  tunnel2_log_options {
+    cloudwatch_log_options {
+      log_enabled       = true
+      log_group_arn     = aws_cloudwatch_log_group.vpn_logs.arn
+      log_output_format = "json"
+    }
+  }
 
   tags = {
     Name = "${local.config.identifier}-vpn-connection-office-${local.workspace_suffix}"

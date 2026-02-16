@@ -1,6 +1,6 @@
 region: "us-east-2"
 identifier: "alisa"
-profile: "alisa-network"
+assume_role_arn: "arn:aws:iam::823613469731:role/terraform"
 
 vpc:
   create_vpc: true

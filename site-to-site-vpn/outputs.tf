@@ -111,3 +111,14 @@ output "customer_gateway_configuration" {
   value       = aws_vpn_connection.office.customer_gateway_configuration
   sensitive   = true
 }
+
+# VPN Logs
+output "vpn_log_group_name" {
+  description = "CloudWatch Log Group name for VPN logs"
+  value       = aws_cloudwatch_log_group.vpn_logs.name
+}
+
+output "vpn_log_group_arn" {
+  description = "CloudWatch Log Group ARN for VPN logs"
+  value       = aws_cloudwatch_log_group.vpn_logs.arn
+}

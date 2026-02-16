@@ -83,9 +83,9 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "this" {
 
 # 3. CRITICAL: Update VPC Route Tables
 resource "aws_route" "send_to_tgw" {
-  count = local.config.transit.customer.create ? 1 : 0
+  for_each = local.config.transit.customer.create ? toset(local.config.transit.customer.routes) : []
   route_table_id         = module.vpc.private_route_table_ids[0] # Your private subnet route table
-  destination_cidr_block = local.config.transit.customer.route   # The CIDR of the OTHER account's network
+  destination_cidr_block = each.value   # The CIDR of the OTHER account's network
   transit_gateway_id     = data.aws_ec2_transit_gateway.shared_tgw.id
 
   depends_on = [
@@ -94,9 +94,9 @@ resource "aws_route" "send_to_tgw" {
 }
 
 resource "aws_route" "send_to_tgw_public" {
-  count = local.config.transit.customer.create ? 1 : 0
-  route_table_id         = module.vpc.public_route_table_ids[0] # Your private subnet route table
-  destination_cidr_block = local.config.transit.customer.route   # The CIDR of the OTHER account's network
+  for_each = local.config.transit.customer.create ? toset(local.config.transit.customer.routes) : []
+  route_table_id         = module.vpc.public_route_table_ids[0] # Your public subnet route table
+  destination_cidr_block = each.value   # The CIDR of the OTHER account's network
   transit_gateway_id     = data.aws_ec2_transit_gateway.shared_tgw.id
 
   depends_on = [
@@ -105,9 +105,9 @@ resource "aws_route" "send_to_tgw_public" {
 }
 
 resource "aws_route" "send_to_tgw_intra" {
-  count = local.config.transit.customer.create ? 1 : 0
-  route_table_id         = module.vpc.intra_route_table_ids[0] # Your private subnet route table
-  destination_cidr_block = local.config.transit.customer.route   # The CIDR of the OTHER account's network
+  for_each = local.config.transit.customer.create ? toset(local.config.transit.customer.routes) : []
+  route_table_id         = module.vpc.intra_route_table_ids[0] # Your intra subnet route table
+  destination_cidr_block = each.value   # The CIDR of the OTHER account's network
   transit_gateway_id     = data.aws_ec2_transit_gateway.shared_tgw.id
 
   depends_on = [
