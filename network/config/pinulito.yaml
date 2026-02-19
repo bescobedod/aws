@@ -1,6 +1,6 @@
 region: "us-east-2"
 identifier: "alisa"
-profile: "pinulito-prod"
+assume_role_arn: "arn:aws:iam::985384755074:role/terraform"
 
 vpc:
   create_vpc: true
@@ -30,7 +30,9 @@ transit:
   customer: 
     create: true
     owner: 823613469731
-    route: "10.0.0.0/16"
+    routes:
+      - "10.0.0.0/16"
+      - "192.168.0.0/23"
   
 
 tags: 

@@ -42,6 +42,12 @@ ec2_instances:
         protocol: -1
         cidr_blocks:
           - "10.0.0.0/8"
+      - description: "Allow Internal Traffic"
+        from_port: -1
+        to_port: -1
+        protocol: -1
+        cidr_blocks:
+          - "192.168.0.0/23"
     egress_rules:
       - description: "Allow all outbound"
         from_port: 0
@@ -61,12 +67,24 @@ ec2_instances:
         protocol: tcp
         cidr_blocks:
           - 10.0.0.0/8
+      - description: "Allow App Port"
+        from_port: 40000
+        to_port: 40000
+        protocol: tcp
+        cidr_blocks:
+          - 10.0.0.0/8
       - description: "Allow Internal Traffic"
         from_port: -1
         to_port: -1
         protocol: -1
         cidr_blocks:
           - "10.0.0.0/8"
+      - description: "Allow Internal Traffic"
+        from_port: -1
+        to_port: -1
+        protocol: -1
+        cidr_blocks:
+          - "192.168.0.0/23"
     egress_rules:
       - description: "Allow all outbound"
         from_port: 0
@@ -92,6 +110,12 @@ ec2_instances:
         protocol: -1
         cidr_blocks:
           - "10.0.0.0/8"
+      - description: "Allow Internal Traffic"
+        from_port: -1
+        to_port: -1
+        protocol: -1
+        cidr_blocks:
+          - "192.168.0.0/23"
     egress_rules:
       - description: "Allow all outbound"
         from_port: 0
