@@ -1,7 +1,7 @@
 region: us-east-2
 assume_role_arn: arn:aws:iam::985384755074:role/terraform  # Replace with IAM Role ARN to assume
 vpc_id: vpc-06effadad2d2271cf  # Replace with your VPC ID
-scheduler : true
+scheduler : false
 
 private_subnets:
   - subnet-0b3d45ab774dbdb5f  # Private subnet 1
@@ -48,6 +48,12 @@ ec2_instances:
         protocol: -1
         cidr_blocks:
           - "192.168.0.0/23"
+      - description: "Allow Internal Traffic"
+        from_port: -1
+        to_port: -1
+        protocol: -1
+        cidr_blocks:
+          - "172.31.0.0/16"
     egress_rules:
       - description: "Allow all outbound"
         from_port: 0
@@ -85,6 +91,12 @@ ec2_instances:
         protocol: -1
         cidr_blocks:
           - "192.168.0.0/23"
+      - description: "Allow Internal Traffic"
+        from_port: -1
+        to_port: -1
+        protocol: -1
+        cidr_blocks:
+          - "172.31.0.0/16"
     egress_rules:
       - description: "Allow all outbound"
         from_port: 0
@@ -116,6 +128,12 @@ ec2_instances:
         protocol: -1
         cidr_blocks:
           - "192.168.0.0/23"
+      - description: "Allow Internal Traffic"
+        from_port: -1
+        to_port: -1
+        protocol: -1
+        cidr_blocks:
+          - "172.31.0.0/16"
     egress_rules:
       - description: "Allow all outbound"
         from_port: 0
