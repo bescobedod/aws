@@ -21,7 +21,7 @@ ec2_instances:
   web-server:
     ami_id: ami-0b788361ab487e4e6
     instance_type: m5.large
-    storage_size: 100
+    storage_size: 250
     use_elastic_ip: true
     ingress_rules:
       - description: "Allow HTTP"
@@ -54,6 +54,12 @@ ec2_instances:
         protocol: -1
         cidr_blocks:
           - "172.31.0.0/16"
+      - description: "Allow Internal Traffic"
+        from_port: -1
+        to_port: -1
+        protocol: -1
+        cidr_blocks:
+          - "10.212.134.0/24"
     egress_rules:
       - description: "Allow all outbound"
         from_port: 0
@@ -63,7 +69,7 @@ ec2_instances:
           - 0.0.0.0/0
   sap-server:
     ami_id: ami-0b788361ab487e4e6
-    instance_type: r5.2xlarge
+    instance_type: r5.4xlarge
     storage_size: 500
     use_elastic_ip: true
     ingress_rules:
@@ -97,6 +103,12 @@ ec2_instances:
         protocol: -1
         cidr_blocks:
           - "172.31.0.0/16"
+      - description: "Allow Internal Traffic"
+        from_port: -1
+        to_port: -1
+        protocol: -1
+        cidr_blocks:
+          - "10.212.134.0/24"
     egress_rules:
       - description: "Allow all outbound"
         from_port: 0
@@ -106,8 +118,8 @@ ec2_instances:
           - 0.0.0.0/0
   sap-db-server:
     ami_id: ami-0b788361ab487e4e6
-    instance_type: r6i.xlarge
-    storage_size: 1000
+    instance_type: r6i.2xlarge
+    storage_size: 1500
     use_elastic_ip: false
     ingress_rules:
       - description: "Allow App Port"
@@ -134,6 +146,12 @@ ec2_instances:
         protocol: -1
         cidr_blocks:
           - "172.31.0.0/16"
+      - description: "Allow Internal Traffic"
+        from_port: -1
+        to_port: -1
+        protocol: -1
+        cidr_blocks:
+          - "10.212.134.0/24"
     egress_rules:
       - description: "Allow all outbound"
         from_port: 0
